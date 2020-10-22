@@ -44,7 +44,16 @@
     <script src="./observers/KeyboardListener.js"></script>
     <script src="./Game.js"></script>
     <script src="./observers/CollisionChecker.js"></script>
-    <script>
+    <script type="module">
+      import utils from './utils/index.js';
+
+      function saveUtilsInWindow() {
+        Object.entries(utils).map(([key, value]) => {
+          window[key] = value;
+        })
+      }
+
+      saveUtilsInWindow();
       const gameCanvas = document.querySelector('canvas.gameCanvas');
 
       window.canvasStyle = {
@@ -58,8 +67,9 @@
       gameCanvas.style.background = canvasStyle.color;
 
       const game = new window.Game(gameCanvas);
-      game.startGameLoop();
+      window.game = game;
 
+      game.startGameLoop();
       game.checkFps((fps) => {
         document.querySelector('h2 span').innerText = fps;
       })

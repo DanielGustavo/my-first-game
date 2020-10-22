@@ -22,11 +22,9 @@ function Player() {
 
   function initialize() {
     function setRandomPosition() {
-      const randomX = Math.random() * window.canvasStyle.width - width;
-      const randomY = Math.random() * window.canvasStyle.width - height;
-
-      x = randomX <= 0 ? 0 : randomX;
-      y = randomY <= 0 ? 0 : randomY;
+      const { x:randomX, y:randomY } = generateRandomPosition(width, height);
+      x = randomX;
+      y = randomY;
     }
 
     setRandomPosition();
