@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: rgb(71, 71, 71);
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      h2 {
+        color: #fff;
+      }
+
+      button {
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <h2>FPS: <span>0</span></h2>
+      <canvas class="gameCanvas"></canvas>
+    </div>
+
+    <script src="./keydrown.js"></script>
+    <script src="./Apple.js"></script>
+    <script src="./Player.js"></script>
+    <script src="./KeyboardListener.js"></script>
+    <script src="./Game.js"></script>
+    <script src="./CollisionChecker.js"></script>
+    <script>
+      const gameCanvas = document.querySelector('canvas.gameCanvas');
+
+      window.canvasStyle = {
+        width: 500,
+        height: 500,
+        color: '#fff',
+      };
+
+      gameCanvas.width = canvasStyle.width;
+      gameCanvas.height = canvasStyle.height;
+      gameCanvas.style.background = canvasStyle.color;
+
+      const game = new window.Game(gameCanvas);
+      game.startGameLoop();
+
+      game.checkFps((fps) => {
+        document.querySelector('h2 span').innerText = fps;
+      })
+    </script>
+  </body>
+</html>
