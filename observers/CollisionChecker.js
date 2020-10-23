@@ -1,5 +1,12 @@
 function CollisionChecker(entities) {
+  const observers = [];
   const entitiesArray = Object.entries(entities).map(entity => entity[1]);
+
+  function notifyObservers(message) {
+    observers.map(observer => {
+      observer(message);
+    });
+  }
 
   function getEntityCorners(entity) {
     return {
@@ -31,6 +38,11 @@ function CollisionChecker(entities) {
         if (colided) {
           if (entity.handleCollision) entity.handleCollision(nextEntity.getType());
           if (nextEntity.handleCollision) nextEntity.handleCollision(entity.getType());
+
+          notifyObservers({
+            entities: [entity, nextEntity],
+            collisionType: 'entity',
+          });
         }
       });
     });
@@ -47,8 +59,18 @@ function CollisionChecker(entities) {
         right: entityCorners.right >= window.canvasStyle.width,
       };
 
+      const collided = collidingSides.up || collidingSides.down ||
+        collidingSides.left || collidingSides.right;
+
       if (entity.handleBoundariesCollision) {
         entity.handleBoundariesCollision(collidingSides);
+
+        if (collided) {
+          notifyObservers({
+            entities: [entity],
+            collisionType: 'boundary',
+          });
+        }
       }
     });
   }
@@ -56,6 +78,10 @@ function CollisionChecker(entities) {
   this.update = function() {
     notifyCollisionBetweenEntities();
     notifyBoundaryCollision();
+  }
+
+  this.addObserver = function(observer) {
+    observers.push(observer);
   }
 }
 

@@ -6,12 +6,15 @@ function Game(gameCanvas) {
   let currentFps = 0;
   initialize();
 
+  this.scoreCounter = new window.ScoreCounter();
+
   this.entities = {
     player: new window.Player(),
     apple: new window.Apple(),
   };
 
   const collisionChecker = new window.CollisionChecker(this.entities);
+  collisionChecker.addObserver(this.scoreCounter.increaseScoreWhenPlayerCollideApple);
 
   function initialize() {
     keyboardListener.start();
@@ -29,6 +32,7 @@ function Game(gameCanvas) {
     }
 
     drawBackground();
+
     this.entities.apple.render(canvasContext);
     this.entities.player.render(canvasContext);
   }

@@ -23,8 +23,21 @@
         align-items: center;
       }
 
+      div.datas {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      div.datas h2.points {
+        color: #ff9000;
+      }
+
       h2 {
         color: #fff;
+      }
+
+      h2.points span {
+        transition: all 0.4s;
       }
 
       button {
@@ -34,7 +47,10 @@
   </head>
   <body>
     <div>
-      <h2>FPS: <span>0</span></h2>
+      <div class="datas">
+        <h2 class="fps">FPS: <span>0</span></h2>
+        <h2 class="points">Points: <span>0</span></h2>
+      </div>
       <canvas class="gameCanvas"></canvas>
     </div>
 
@@ -43,7 +59,26 @@
     <script src="./entities/Player.js"></script>
     <script src="./observers/KeyboardListener.js"></script>
     <script src="./Game.js"></script>
+    <script src="./observers/ScoreCounter.js"></script>
     <script src="./observers/CollisionChecker.js"></script>
+    <script>
+      function displayScore(message) {
+        const scoreDisplayer = document.querySelector('h2.points span');
+        scoreDisplayer.innerText = message.score;
+
+        if (message.type === 'score-increased') {
+          scoreDisplayer.style.color = '#19FF53';
+
+          setTimeout(() => {
+            scoreDisplayer.style.color = '#ff9000';
+          }, 500);
+        }
+      }
+
+      function displayFps(fps) {
+        document.querySelector('h2.fps span').innerText = fps;
+      }
+    </script>
     <script type="module">
       import utils from './utils/index.js';
 
@@ -70,9 +105,8 @@
       window.game = game;
 
       game.startGameLoop();
-      game.checkFps((fps) => {
-        document.querySelector('h2 span').innerText = fps;
-      })
+      game.checkFps(displayFps);
+      game.scoreCounter.addObserver(displayScore);
     </script>
   </body>
 </html>
