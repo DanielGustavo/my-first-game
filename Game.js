@@ -4,21 +4,26 @@ function Game(gameCanvas) {
   const keyboardListener = new window.KeyboardListener();
   const limitFps = 60;
   let currentFps = 0;
-  initialize();
-
-  this.scoreCounter = new window.ScoreCounter();
 
   this.entities = {
     player: new window.Player(),
     apple: new window.Apple(),
   };
 
+  this.scoreCounter = new window.ScoreCounter();
   const collisionChecker = new window.CollisionChecker(this.entities);
-  collisionChecker.addObserver(this.scoreCounter.increaseScoreWhenPlayerCollideApple);
 
-  function initialize() {
+  const initialize = () => {
     keyboardListener.start();
+
+    this.entities.player.addObserver(
+      this.entities.apple.changeTeleportIntervalAccordingToTheCurrentPlayersSpeed
+    );
+
+    collisionChecker.addObserver(this.scoreCounter.increaseScoreWhenPlayerCollideApple);
   }
+
+  initialize();
 
   this.update = function() {
     collisionChecker.update();

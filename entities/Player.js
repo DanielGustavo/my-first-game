@@ -9,9 +9,11 @@ function Player() {
     left: true,
     right: true,
   };
+  const observers = [];
+  const initialSpeed = 3;
   let x = 0;
   let y = 0;
-  let speed = 3;
+  let speed = initialSpeed;
   initialize();
 
   this.getX = () => x;
@@ -19,6 +21,7 @@ function Player() {
   this.getWidth = () => width;
   this.getHeight = () => height;
   this.getType = () => type;
+  this.getInitalSpeed = () => initialSpeed;
 
   function initialize() {
     function setRandomPosition() {
@@ -34,9 +37,25 @@ function Player() {
     const valueToIncrease = 2;
     speed += valueToIncrease;
 
+    notifyObservers({
+      type: 'increased-speed',
+      speed,
+    });
+
     setTimeout(() => {
       speed -= valueToIncrease;
-    }, 3000);
+
+      notifyObservers({
+        type: 'decreased-speed',
+        speed,
+      });
+    }, 5000);
+  }
+
+  function notifyObservers(message) {
+    observers.map((observer) => {
+      observer(message);
+    });
   }
 
   this.handleBoundariesCollision = function(collidingSides) {
@@ -90,6 +109,10 @@ function Player() {
   this.render = function(canvasContext) {
     canvasContext.fillStyle = color;
     canvasContext.fillRect(x, y, width, height);
+  }
+
+  this.addObserver = function(observer) {
+    observers.push(observer);
   }
 }
 
