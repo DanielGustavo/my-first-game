@@ -54,13 +54,13 @@
       <canvas class="gameCanvas"></canvas>
     </div>
 
-    <script src="./modules/keydrown.js"></script>
-    <script src="./entities/Apple.js"></script>
-    <script src="./entities/Player.js"></script>
-    <script src="./observers/KeyboardListener.js"></script>
-    <script src="./Game.js"></script>
-    <script src="./observers/ScoreCounter.js"></script>
-    <script src="./observers/CollisionChecker.js"></script>
+    <script src="./static/modules/keydrown.js"></script>
+    <script src="./static/entities/Apple.js"></script>
+    <script src="./static/entities/Player.js"></script>
+    <script src="./static/observers/KeyboardListener.js"></script>
+    <script src="./static/Game.js"></script>
+    <script src="./static/observers/ScoreCounter.js"></script>
+    <script src="./static/observers/CollisionChecker.js"></script>
     <script>
       function displayScore(message) {
         const scoreDisplayer = document.querySelector('h2.points span');
@@ -70,7 +70,7 @@
           scoreDisplayer.style.color = '#19FF53';
 
           setTimeout(() => {
-            scoreDisplayer.style.color = '#ff9000';
+            scoreDisplayer.style.color = '#ff8000';
           }, 500);
         }
       }
@@ -80,7 +80,7 @@
       }
     </script>
     <script type="module">
-      import utils from './utils/index.js';
+      import utils from './static/utils/index.js';
 
       function saveUtilsInWindow() {
         Object.entries(utils).map(([key, value]) => {
