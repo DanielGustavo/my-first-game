@@ -78,6 +78,7 @@ function Player() {
   this.handleCollision = function(entityType) {
     if (entityType === 'Apple') {
       increaseSpeedTemporarily();
+      window.playAudio('../assets/sounds/collect-sound.mp3');
     }
   }
 
