@@ -30,5 +30,3 @@ function KeyboardListener() {
     });
   }
 }
-
-window.KeyboardListener = KeyboardListener;

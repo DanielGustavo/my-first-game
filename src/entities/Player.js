@@ -61,9 +61,9 @@ function Player() {
   this.handleBoundariesCollision = function(collidingSides) {
     const sidesHandlingFunctions = {
       up: () => y = 0,
-      down: () => y = window.canvasStyle.height - height,
+      down: () => y = canvasStyle.height - height,
       left: () => x = 0,
-      right: () => x = window.canvasStyle.width - width
+      right: () => x = canvasStyle.width - width
     };
 
     Object.entries(collidingSides).map(([side, collided]) => {
@@ -78,7 +78,7 @@ function Player() {
   this.handleCollision = function(entityType) {
     if (entityType === 'Apple') {
       increaseSpeedTemporarily();
-      window.playAudio('./static/assets/sounds/collect-sound.mp3');
+      playAudio('./static/assets/sounds/collect-sound.mp3');
     }
   }
 
@@ -116,5 +116,3 @@ function Player() {
     observers.push(observer);
   }
 }
-
-window.Player = Player;

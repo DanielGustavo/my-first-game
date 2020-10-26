@@ -62,7 +62,7 @@ function Apple() {
 
     const proportionCalculusOfTeleportIntervalAndPlayerSpeed = (
       initialTeleportIntervalInMilliseconds
-      * window.game.entities.player.getInitalSpeed()
+      * game.entities.player.getInitalSpeed()
     ) / speed;
 
     teleportIntervalInMilliseconds = proportionCalculusOfTeleportIntervalAndPlayerSpeed;
@@ -70,5 +70,3 @@ function Apple() {
     if (type === 'decreased-speed') restartTeleportInterval();
   }
 }
-
-window.Apple = Apple;

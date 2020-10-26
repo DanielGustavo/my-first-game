@@ -54,9 +54,9 @@ function CollisionChecker(entities) {
 
       const collidingSides = {
         up: entityCorners.up <= 0,
-        down: entityCorners.down >= window.canvasStyle.height,
+        down: entityCorners.down >= canvasStyle.height,
         left: entityCorners.left <= 0,
-        right: entityCorners.right >= window.canvasStyle.width,
+        right: entityCorners.right >= canvasStyle.width,
       };
 
       const collided = collidingSides.up || collidingSides.down ||
@@ -84,5 +84,3 @@ function CollisionChecker(entities) {
     observers.push(observer);
   }
 }
-
-window.CollisionChecker = CollisionChecker;
