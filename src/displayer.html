@@ -6,8 +6,12 @@
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="">
     <style>
+      @font-face {
+        font-family: "GrandStander";
+        src: url('./static/assets/fonts/Grandstander-ExtraBold.ttf')
+      }
+
       * {
         margin: 0;
         padding: 0;
@@ -23,22 +27,6 @@
         align-items: center;
       }
 
-      div.datas {
-        display: flex;
-        justify-content: space-between;
-      }
-
-      div.datas h2.points {
-        color: #ff9000;
-      }
-
-      h2 {
-        color: #fff;
-      }
-
-      h2.points span {
-        transition: all 0.4s;
-      }
 
       button {
         cursor: pointer;
@@ -46,13 +34,7 @@
     </style>
   </head>
   <body>
-    <div>
-      <div class="datas">
-        <h2 class="fps">FPS: <span>0</span></h2>
-        <h2 class="points">Points: <span>0</span></h2>
-      </div>
-      <canvas class="gameCanvas"></canvas>
-    </div>
+    <canvas class="gameCanvas"></canvas>
 
     <script src="./static/modules/keydrown.js"></script>
     <script src="./static/entities/Apple.js"></script>
@@ -61,24 +43,9 @@
     <script src="./static/Game.js"></script>
     <script src="./static/observers/ScoreCounter.js"></script>
     <script src="./static/observers/CollisionChecker.js"></script>
-    <script>
-      function displayScore(message) {
-        const scoreDisplayer = document.querySelector('h2.points span');
-        scoreDisplayer.innerText = message.score;
-
-        if (message.type === 'score-increased') {
-          scoreDisplayer.style.color = '#19FF53';
-
-          setTimeout(() => {
-            scoreDisplayer.style.color = '#ff8000';
-          }, 500);
-        }
-      }
-
-      function displayFps(fps) {
-        document.querySelector('h2.fps span').innerText = fps;
-      }
-    </script>
+    <script src="./static/HUD/FpsDisplayer.js"></script>
+    <script src="./static/HUD/ScoreDisplayer.js"></script>
+    <script src="./static/HUD/HUD.js"></script>
     <script type="module">
       import utils from './static/utils/index.js';
 
@@ -100,8 +67,6 @@
       window.game = game;
 
       game.startGameLoop();
-      game.checkFps(displayFps);
-      game.scoreCounter.addObserver(displayScore);
     </script>
   </body>
 </html>

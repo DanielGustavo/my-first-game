@@ -3,6 +3,7 @@ function Game(gameCanvas) {
   const canvasContext = canvas.getContext('2d');
   const keyboardListener = new KeyboardListener();
   const limitFps = 60;
+  const HUDInstance = new HUD();
   let currentFps = 0;
 
   this.entities = {
@@ -39,6 +40,7 @@ function Game(gameCanvas) {
 
     this.entities.apple.render(canvasContext);
     this.entities.player.render(canvasContext);
+    HUDInstance.render(canvasContext);
   }
 
   this.checkFps = function(observerFunction) {
@@ -63,4 +65,6 @@ function Game(gameCanvas) {
       this.render();
     }, fpsPerSecond);
   }
+
+  HUDInstance.initialize(this);
 }
