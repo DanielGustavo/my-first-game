@@ -90,16 +90,11 @@
 
       saveUtilsInWindow();
       const gameCanvas = document.querySelector('canvas.gameCanvas');
+      window.gameCanvas = gameCanvas;
 
-      window.canvasStyle = {
-        width: 500,
-        height: 500,
-        color: '#fff',
-      };
-
-      gameCanvas.width = canvasStyle.width;
-      gameCanvas.height = canvasStyle.height;
-      gameCanvas.style.background = canvasStyle.color;
+      gameCanvas.width = 500;
+      gameCanvas.height = 500;
+      gameCanvas.style.background = '#fff';
 
       const game = new Game(gameCanvas);
       window.game = game;

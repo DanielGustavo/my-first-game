@@ -54,9 +54,9 @@ function CollisionChecker(entities) {
 
       const collidingSides = {
         up: entityCorners.up <= 0,
-        down: entityCorners.down >= canvasStyle.height,
+        down: entityCorners.down >= gameCanvas.height,
         left: entityCorners.left <= 0,
-        right: entityCorners.right >= canvasStyle.width,
+        right: entityCorners.right >= gameCanvas.width,
       };
 
       const collided = collidingSides.up || collidingSides.down ||

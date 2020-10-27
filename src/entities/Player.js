@@ -61,9 +61,9 @@ function Player() {
   this.handleBoundariesCollision = function(collidingSides) {
     const sidesHandlingFunctions = {
       up: () => y = 0,
-      down: () => y = canvasStyle.height - height,
+      down: () => y = gameCanvas.height - height,
       left: () => x = 0,
-      right: () => x = canvasStyle.width - width
+      right: () => x = gameCanvas.width - width
     };
 
     Object.entries(collidingSides).map(([side, collided]) => {

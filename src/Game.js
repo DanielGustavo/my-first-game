@@ -31,9 +31,8 @@ function Game(gameCanvas) {
 
   this.render = function() {
     function drawBackground() {
-      const { color, width, height } = canvasStyle;
-      canvasContext.fillStyle = color;
-      canvasContext.fillRect(0, 0, width, height);
+      canvasContext.fillStyle = gameCanvas.style.background;
+      canvasContext.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
     }
 
     drawBackground();
