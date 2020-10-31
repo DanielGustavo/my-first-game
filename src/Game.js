@@ -28,6 +28,7 @@ function Game(gameCanvas) {
 
   this.update = function() {
     collisionChecker.update();
+    keyboardListener.tick();
   }
 
   this.render = function() {

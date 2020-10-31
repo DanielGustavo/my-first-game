@@ -1,4 +1,6 @@
 function KeyboardListener() {
+  const keypressListener = new KeypressListener();
+
   const actions = {
     d: () => {
       game.entities.player.walk('right');
@@ -19,14 +21,12 @@ function KeyboardListener() {
   };
 
   this.start = function() {
-    kd.Key.prototype.down(({ key }) => {
+    keypressListener.onKeyPress(({ key }) => {
       if (actions[key]) {
         actions[key]();
       }
     });
-
-    kd.run(() => {
-      kd.tick();
-    });
   }
+
+  this.tick = keypressListener.tick;
 }
