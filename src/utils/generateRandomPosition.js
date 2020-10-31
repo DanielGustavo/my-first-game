@@ -1,4 +1,4 @@
-export default function (entityWidth, entityHeight) {
+export default function ({ gameCanvas, entityWidth, entityHeight }) {
   const randomX = Math.random() * gameCanvas.width - entityWidth;
   const randomY = Math.random() * gameCanvas.height - entityHeight;
 

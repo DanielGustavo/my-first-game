@@ -1,4 +1,4 @@
-function KeyboardListener() {
+function KeyboardListener(game) {
   const keypressListener = new KeypressListener();
 
   const actions = {

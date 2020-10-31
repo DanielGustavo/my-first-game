@@ -1,4 +1,4 @@
-function Apple() {
+function Apple(game) {
   const width = 18;
   const height = 18;
   const type = 'Apple';
@@ -16,7 +16,14 @@ function Apple() {
   this.getType = () => type;
 
   function setRandomPosition() {
-    const { x: randomX, y: randomY } = generateRandomPosition(width, height);
+    const gameCanvas = game.getCanvas();
+
+    const { x: randomX, y: randomY } = generateRandomPosition({
+      gameCanvas,
+      entityWidth: width,
+      entityHeight: height,
+    });
+
     x = randomX;
     y = randomY;
   }

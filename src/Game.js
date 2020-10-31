@@ -1,14 +1,16 @@
 function Game(gameCanvas) {
   const canvas = gameCanvas;
   const canvasContext = canvas.getContext('2d');
-  const keyboardListener = new KeyboardListener();
+  const keyboardListener = new KeyboardListener(this);
   const limitFps = 60;
   const HUDInstance = new HUD();
   let currentFps = 0;
 
+  this.getCanvas = () => canvas;
+
   this.entities = {
-    player: new Player(),
-    apple: new Apple(),
+    player: new Player(this),
+    apple: new Apple(this),
   };
 
   this.scoreCounter = new ScoreCounter();
@@ -33,8 +35,8 @@ function Game(gameCanvas) {
 
   this.render = function() {
     function drawBackground() {
-      canvasContext.fillStyle = gameCanvas.style.background;
-      canvasContext.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
+      canvasContext.fillStyle = canvas.style.background;
+      canvasContext.fillRect(0, 0, canvas.width, canvas.height);
     }
 
     drawBackground();

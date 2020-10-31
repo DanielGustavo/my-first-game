@@ -1,4 +1,4 @@
-function Player() {
+function Player(game) {
   const width = 18;
   const height = 18;
   const color = '#000';
@@ -25,7 +25,14 @@ function Player() {
 
   function initialize() {
     function setRandomPosition() {
-      const { x:randomX, y:randomY } = generateRandomPosition(width, height);
+      const gameCanvas = game.getCanvas();
+
+      const { x:randomX, y:randomY } = generateRandomPosition({
+        gameCanvas,
+        entityWidth: width,
+        entityHeight: height,
+      });
+
       x = randomX;
       y = randomY;
     }
