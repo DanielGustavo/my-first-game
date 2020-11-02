@@ -29,14 +29,9 @@ function Apple(game) {
   }
 
   function teleportToRandomPositionInAnInterval() {
-    parent.teleportInterval = setInterval(() => {
+    parent.teleportInterval = game.setInterval(() => {
       setRandomPosition();
     }, teleportIntervalInMilliseconds);
-  }
-
-  function restartTeleportInterval() {
-    clearInterval(parent.teleportInterval);
-    teleportToRandomPositionInAnInterval();
   }
 
   function initialize() {
@@ -47,7 +42,7 @@ function Apple(game) {
   this.handleCollision = function(entityType) {
     if (entityType === 'Player') {
       setRandomPosition();
-      restartTeleportInterval();
+      parent.teleportInterval.restart();
     }
   }
 
@@ -74,6 +69,6 @@ function Apple(game) {
 
     teleportIntervalInMilliseconds = proportionCalculusOfTeleportIntervalAndPlayerSpeed;
 
-    if (type === 'decreased-speed') restartTeleportInterval();
+    parent.teleportInterval.changeMilliseconds(teleportIntervalInMilliseconds);
   }
 }

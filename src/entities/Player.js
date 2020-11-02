@@ -49,7 +49,7 @@ function Player(game) {
       speed,
     });
 
-    setTimeout(() => {
+    game.setTimeout(() => {
       speed -= valueToIncrease;
 
       notifyObservers({

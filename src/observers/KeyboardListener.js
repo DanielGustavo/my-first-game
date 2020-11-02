@@ -1,7 +1,7 @@
 function KeyboardListener(game) {
   const keypressListener = new KeypressListener();
 
-  const actions = {
+  const pausableActions = {
     d: () => {
       game.entities.player.walk('right');
     },
@@ -14,16 +14,28 @@ function KeyboardListener(game) {
     s: () => {
       game.entities.player.walk('down');
     },
-    ArrowRight: () => actions.d(),
-    ArrowLeft: () => actions.a(),
-    ArrowUp: () => actions.w(),
-    ArrowDown: () => actions.s(),
+    ArrowRight: () => pausableActions.d(),
+    ArrowLeft: () => pausableActions.a(),
+    ArrowUp: () => pausableActions.w(),
+    ArrowDown: () => pausableActions.s(),
+  };
+
+  const unpausableActions = {
+    Escape: () => {
+      game.paused = !game.paused;
+    },
   };
 
   this.start = function() {
     keypressListener.onKeyPress(({ key }) => {
-      if (actions[key]) {
-        actions[key]();
+      if (pausableActions[key]) {
+        pausableActions[key]();
+      }
+    });
+
+    document.addEventListener('keydown', ({ key }) => {
+      if (unpausableActions[key]) {
+        unpausableActions[key]();
       }
     });
   }
