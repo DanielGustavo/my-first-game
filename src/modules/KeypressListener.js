@@ -36,14 +36,8 @@ function KeypressListener() {
     });
 
     window.addEventListener('mousedown', function (event) {
-      if (event.button === 2) {
-        ableToClick = false;
-      }
-    });
-
-    window.addEventListener('mousedown', function (event) {
       if (event.button !== 2 && !ableToClick) {
-        var verify = function verify(event) {
+        var verifyIfSomeKeyIsBeingPressed = function verifyIfSomeKeyIsBeingPressed(event) {
           keysStateEntries.map(function (_ref3, index) {
             var _ref4 = _slicedToArray(_ref3, 1),
                 key = _ref4[0];
@@ -54,7 +48,9 @@ function KeypressListener() {
 
             var isTheLastIndex = index === keysStateEntries.length - 1;
 
-            if (isTheLastIndex) removeEventListener('keydown', verify);
+            if (isTheLastIndex) {
+              removeEventListener('keydown', verifyIfSomeKeyIsBeingPressed);
+            }
           });
         };
 
@@ -69,8 +65,12 @@ function KeypressListener() {
 
         ableToClick = true;
 
-        window.addEventListener('keydown', verify);
+        window.addEventListener('keydown', verifyIfSomeKeyIsBeingPressed);
       }
+    });
+
+    window.addEventListener('contextmenu', function () {
+      ableToClick = false;
     });
   }
 
