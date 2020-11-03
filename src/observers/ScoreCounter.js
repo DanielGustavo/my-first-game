@@ -9,14 +9,11 @@ function ScoreCounter() {
   }
 
   this.increaseScoreWhenPlayerCollideApple = function(message) {
-    if (message.collisionType !== 'entity') return;
+    if (message.collisionType !== 'collidableObjects') return;
 
-    const [entity1, entity2] = message.entities;
+    const playerCollidedApple = message.objectsNames.includesAll(['Apple', 'Player']);
 
-    if (
-      entity1.getType() === 'Player' &&
-      entity2.getType() === 'Apple'
-    ) {
+    if (playerCollidedApple) {
       score++;
       notifyObservers({
         type: 'score-increased',

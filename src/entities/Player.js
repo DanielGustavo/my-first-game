@@ -2,7 +2,6 @@ function Player(game) {
   const width = 18;
   const height = 18;
   const color = '#000';
-  const type = 'Player';
   const ableToWalk = {
     up: true,
     down: true,
@@ -20,7 +19,6 @@ function Player(game) {
   this.getY = () => y;
   this.getWidth = () => width;
   this.getHeight = () => height;
-  this.getType = () => type;
   this.getInitalSpeed = () => initialSpeed;
 
   function initialize() {

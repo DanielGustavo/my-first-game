@@ -1,6 +1,5 @@
-function CollisionChecker(entities) {
+function CollisionChecker(collidableObjects) {
   const observers = [];
-  const entitiesArray = Object.entries(entities).map(entity => entity[1]);
 
   function notifyObservers(message) {
     observers.map(observer => {
@@ -8,40 +7,50 @@ function CollisionChecker(entities) {
     });
   }
 
-  function getEntityCorners(entity) {
+  function getObjectCorners(object) {
     return {
-      left: entity.getX(),
-      right: entity.getX() + entity.getWidth(),
-      down: entity.getY() + entity.getHeight(),
-      up: entity.getY()
+      left: object.getX(),
+      right: object.getX() + object.getWidth(),
+      down: object.getY() + object.getHeight(),
+      up: object.getY()
     };
   }
 
-  function checkCollisionBetweenEntities(entity1Corners, entity2Corners) {
+  function checkCollisionBetweenObjects(object1Corners, object2Corners) {
     return (
-      entity1Corners.down >= entity2Corners.up &&
-      entity1Corners.left <= entity2Corners.right &&
-      entity1Corners.up <= entity2Corners.down &&
-      entity1Corners.right >= entity2Corners.left
+      object1Corners.down >= object2Corners.up &&
+      object1Corners.left <= object2Corners.right &&
+      object1Corners.up <= object2Corners.down &&
+      object1Corners.right >= object2Corners.left
     );
   }
 
-  function notifyCollisionBetweenEntities() {
-    entitiesArray.map((entity, index) => {
-      const entityCorners = getEntityCorners(entity);
-      const nextEntitiesArray = entitiesArray.slice(index + 1);
+  function notifyCollisionBetweenObjects() {
+    const objectsArray = Object.entries(collidableObjects).map(object => object[1]);
 
-      nextEntitiesArray.map(nextEntity => {
-        const nextEntitycorners = getEntityCorners(nextEntity);
-        const colided = checkCollisionBetweenEntities(entityCorners, nextEntitycorners);
+    objectsArray.map((object, index) => {
+      const objectCorners = getObjectCorners(object);
+      const nextObjectsArray = objectsArray.slice(index + 1);
 
-        if (colided) {
-          if (entity.handleCollision) entity.handleCollision(nextEntity.getType());
-          if (nextEntity.handleCollision) nextEntity.handleCollision(entity.getType());
+      nextObjectsArray.map(object2 => {
+        const object2Corners = getObjectCorners(object2);
+        const collided = checkCollisionBetweenObjects(objectCorners, object2Corners);
+
+        if (collided) {
+          const object2Name = object2.constructor.name;
+          const objectName = object.constructor.name;
+
+          if (object.handleCollision) {
+            object.handleCollision(object2Name);
+          }
+          if (object2.handleCollision) {
+            object2.handleCollision(objectName);
+          }
 
           notifyObservers({
-            entities: [entity, nextEntity],
-            collisionType: 'entity',
+            objects: [object, object2],
+            objectsNames: [objectName, object2Name],
+            collisionType: 'collidableObjects',
           });
         }
       });
@@ -49,25 +58,28 @@ function CollisionChecker(entities) {
   }
 
   function notifyBoundaryCollision() {
-    entitiesArray.map(entity => {
-      const entityCorners = getEntityCorners(entity);
+    const objectsArray = Object.entries(collidableObjects).map(object => object[1]);
+
+    objectsArray.map(object => {
+      const objectCorners = getObjectCorners(object);
 
       const collidingSides = {
-        up: entityCorners.up <= 0,
-        down: entityCorners.down >= gameCanvas.height,
-        left: entityCorners.left <= 0,
-        right: entityCorners.right >= gameCanvas.width,
+        up: objectCorners.up <= 0,
+        down: objectCorners.down >= gameCanvas.height,
+        left: objectCorners.left <= 0,
+        right: objectCorners.right >= gameCanvas.width,
       };
 
       const collided = collidingSides.up || collidingSides.down ||
         collidingSides.left || collidingSides.right;
 
-      if (entity.handleBoundariesCollision) {
-        entity.handleBoundariesCollision(collidingSides);
+      if (object.handleBoundariesCollision) {
+        object.handleBoundariesCollision(collidingSides);
 
         if (collided) {
           notifyObservers({
-            entities: [entity],
+            objects: [object],
+            objectsNames: [object.constructor.name],
             collisionType: 'boundary',
           });
         }
@@ -76,7 +88,7 @@ function CollisionChecker(entities) {
   }
 
   this.update = function() {
-    notifyCollisionBetweenEntities();
+    notifyCollisionBetweenObjects();
     notifyBoundaryCollision();
   }
 

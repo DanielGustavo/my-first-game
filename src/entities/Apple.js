@@ -1,7 +1,6 @@
 function Apple(game) {
   const width = 18;
   const height = 18;
-  const type = 'Apple';
   const color = '#ff0000';
   const initialTeleportIntervalInMilliseconds = 3000;
   let teleportIntervalInMilliseconds = initialTeleportIntervalInMilliseconds;
@@ -13,7 +12,6 @@ function Apple(game) {
   this.getY = () => y;
   this.getWidth = () => width;
   this.getHeight = () => height;
-  this.getType = () => type;
 
   function setRandomPosition() {
     const gameCanvas = game.getCanvas();
