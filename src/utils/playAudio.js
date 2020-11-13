@@ -1,4 +1,4 @@
-export default function(path) {
+module.exports = function(path) {
   const audio = new Audio(path);
   audio.play();
 }

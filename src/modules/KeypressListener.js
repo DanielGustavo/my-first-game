@@ -1,7 +1,5 @@
 'use strict';
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 function KeypressListener() {
@@ -10,19 +8,25 @@ function KeypressListener() {
   var keysState = {};
   var keypressObservers = [];
   var keyupObservers = [];
-  var ableToClick = true;
   var verificationsPerSecond = 60;
+  var ableToPress = true;
+  var initialized = false;
 
   function notifyKeyupObservers(event) {
-    keyupObservers.map(function (observer) {
+    keyupObservers.forEach(function (observer) {
       return observer(event);
     });
   }
 
   function notifyKeypressObservers(event) {
-    keypressObservers.map(function (observer) {
+    keypressObservers.forEach(function (observer) {
       return observer(event);
     });
+  }
+
+  function handleContextMenuOut() {
+    ableToPress = true;
+    notifyKeyupObservers({ type: 'contextMenuOut' });
   }
 
   function initialize() {
@@ -31,57 +35,61 @@ function KeypressListener() {
     });
 
     window.addEventListener('keyup', function (event) {
+      if (event.key === 'Escape' && !ableToPress) {
+        handleContextMenuOut();
+        return;
+      }
+
       keysState[event.key] = { pressed: false, event: event };
       notifyKeyupObservers(event);
     });
 
-    window.addEventListener('mousedown', function (event) {
-      if (event.button !== 2 && !ableToClick) {
-        var verifyIfSomeKeyIsBeingPressed = function verifyIfSomeKeyIsBeingPressed(event) {
-          keysStateEntries.map(function (_ref3, index) {
-            var _ref4 = _slicedToArray(_ref3, 1),
-                key = _ref4[0];
+    window.addEventListener('contextmenu', function (event) {
+      if (event.defaultPrevented) return;
+      var keysStateEntries = Object.entries(keysState);
 
-            if (event.key === key) {
-              keysState[key] = _extends({}, keysState[key], { pressed: true });
-            }
+      keysStateEntries.forEach(function (_ref) {
+        var _ref2 = _slicedToArray(_ref, 2),
+            currentKey = _ref2[1];
 
-            var isTheLastIndex = index === keysStateEntries.length - 1;
+        currentKey.pressed = false;
+      });
 
-            if (isTheLastIndex) {
-              removeEventListener('keydown', verifyIfSomeKeyIsBeingPressed);
-            }
-          });
-        };
+      ableToPress = false;
 
-        var keysStateEntries = Object.entries(keysState);
-
-        keysStateEntries.map(function (_ref) {
-          var _ref2 = _slicedToArray(_ref, 1),
-              key = _ref2[0];
-
-          keysState[key] = _extends({}, keysState[key], { pressed: false });
-        });
-
-        ableToClick = true;
-
-        window.addEventListener('keydown', verifyIfSomeKeyIsBeingPressed);
+      function mouseDownCallback(event) {
+        if (event.button !== 2 && !ableToPress) {
+          handleContextMenuOut();
+          removeEventListener('mousedown', mouseDownCallback);
+        }
       }
+
+      function windowBlurCallback() {
+        if (!ableToPress) {
+          handleContextMenuOut();
+          removeEventListener('blur', windowBlurCallback);
+        }
+      }
+
+      window.addEventListener('mousedown', mouseDownCallback);
+      window.addEventListener('blur', windowBlurCallback);
     });
 
-    window.addEventListener('contextmenu', function () {
-      ableToClick = false;
-    });
+    initialized = true;
   }
 
   this.tick = function () {
+    if (!initialized) {
+      initialize();
+    }
+
     var keysStateEntries = Object.entries(keysState);
 
-    keysStateEntries.map(function (_ref5) {
-      var _ref6 = _slicedToArray(_ref5, 2),
-          state = _ref6[1];
+    keysStateEntries.forEach(function (_ref3) {
+      var _ref4 = _slicedToArray(_ref3, 2),
+          state = _ref4[1];
 
-      if (state.pressed && ableToClick) {
+      if (state.pressed && ableToPress) {
         notifyKeypressObservers(state.event);
       }
     });
@@ -107,6 +115,4 @@ function KeypressListener() {
 
     keyupObservers.push(observer);
   };
-
-  initialize();
 }

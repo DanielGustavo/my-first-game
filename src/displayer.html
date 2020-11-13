@@ -9,58 +9,41 @@
     <style>
       @font-face {
         font-family: "GrandStander";
-        src: url('./static/assets/fonts/Grandstander-ExtraBold.ttf')
+        src: url('./assets/fonts/Grandstander-ExtraBold.ttf')
       }
 
       * {
         margin: 0;
         padding: 0;
+        overflow: hidden;
       }
 
       body {
-        font-family: Arial, Helvetica, sans-serif;
         background-color: rgb(71, 71, 71);
         height: 100vh;
         width: 100vw;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-
-
-      button {
-        cursor: pointer;
       }
     </style>
   </head>
   <body>
     <canvas class="gameCanvas"></canvas>
 
-    <script src="./static/modules/KeypressListener.js"></script>
-    <script src="./static/entities/Apple.js"></script>
-    <script src="./static/entities/Player.js"></script>
-    <script src="./static/observers/KeyboardListener.js"></script>
-    <script src="./static/Game.js"></script>
-    <script src="./static/observers/ScoreCounter.js"></script>
-    <script src="./static/observers/CollisionChecker.js"></script>
-    <script src="./static/HUD/FpsDisplayer.js"></script>
-    <script src="./static/HUD/ScoreDisplayer.js"></script>
-    <script src="./static/HUD/HUD.js"></script>
-    <script type="module">
-      import utils from './static/utils/index.js';
-
-      function saveUtilsInWindow() {
-        Object.entries(utils).map(([key, value]) => {
-          window[key] = value;
-        })
-      }
-
-      saveUtilsInWindow();
+    <script src="./modules/KeypressListener.js"></script>
+    <script src="./entities/Apple.js"></script>
+    <script src="./entities/Player.js"></script>
+    <script src="./observers/KeyboardListener.js"></script>
+    <script src="./Game.js"></script>
+    <script src="./observers/ScoreCounter.js"></script>
+    <script src="./observers/CollisionChecker.js"></script>
+    <script src="./HUD/FpsDisplayer.js"></script>
+    <script src="./HUD/ScoreDisplayer.js"></script>
+    <script src="./HUD/HUD.js"></script>
+    <script>
       const gameCanvas = document.querySelector('canvas.gameCanvas');
       window.gameCanvas = gameCanvas;
 
-      gameCanvas.width = 500;
-      gameCanvas.height = 500;
+      gameCanvas.width = 700;
+      gameCanvas.height = 600;
       gameCanvas.style.background = '#fff';
 
       const game = new Game(gameCanvas);

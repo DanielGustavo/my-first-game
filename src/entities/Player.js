@@ -83,7 +83,7 @@ function Player(game) {
   this.handleCollision = function(entityType) {
     if (entityType === 'Apple') {
       increaseSpeedTemporarily();
-      playAudio('./static/assets/sounds/collect-sound.mp3');
+      playAudio('./assets/sounds/collect-sound.mp3');
     }
   }
 
