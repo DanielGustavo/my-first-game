@@ -3,8 +3,6 @@
 
 ![my first game](./docs/gameExample.gif)
 
-<br>
-
 # Table of contents
 <!--ts-->
   * [About](#about-)
@@ -14,17 +12,11 @@
   * [Author](#author)
 <!--te-->
 
-<br>
-
 # About 📜
 I've been making this project just for fun and, despite it's a pretty simple game, I ended up learning some cool things which I want to teach someday, probably writing articles about the progress of this project.
 
-<br>
-
 # Prerequisites
 Before start the game, you're gonna need to have [Node.js](https://nodejs.org/en/) installed on your machine.
-
-<br>
 
 # How to run the game
 If you already have [Node.js](https://nodejs.org/en/) installed on your machine, just open the terminal in the game's folder and follow the steps bellow:
@@ -39,12 +31,8 @@ If you already have [Node.js](https://nodejs.org/en/) installed on your machine,
 > npm run start
 ```
 
-<br>
-
 # Tecnologies 🛠
-- [Node.js](https://nodejs.org/en/)
-
-<br>
+- [Electron](https://www.electronjs.org/)
 
 # Author
 
