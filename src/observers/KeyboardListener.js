@@ -22,7 +22,13 @@ function KeyboardListener(game) {
 
   const unpausableActions = {
     Escape: () => {
-      game.paused = !game.paused;
+      const gameMode = game.getMode();
+
+      if (gameMode === 'game') {
+        game.setMode('pauseMenu');
+      } else if (gameMode === 'pauseMenu') {
+        game.setMode('game');
+      }
     },
   };
 

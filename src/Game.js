@@ -6,9 +6,9 @@ function Game(gameCanvas) {
   const HUDInstance = new HUD();
   const intervals = [];
   const timeouts = [];
+  const availableModes = ['homeMenu', 'game', 'pauseMenu']
   let currentFps = 0;
-
-  this.paused = false;
+  let mode = 'homeMenu';
 
   this.setTimeout = (callback, milliseconds) => {
     const timeout = {
@@ -69,6 +69,26 @@ function Game(gameCanvas) {
     apple: new Apple(this),
   };
 
+  this.getMode = () => mode;
+
+  this.setMode = (newMode) => {
+    if (!availableModes.includes(newMode)) {
+      throw new Error(`'${newMode}' isn't an available mode`);
+    }
+
+    const previousModeMenu = document.querySelector(`section.${mode}`);
+    if (previousModeMenu) {
+      previousModeMenu.style.visibility = 'hidden';
+    }
+
+    const nextModeMenu = document.querySelector(`section.${newMode}`);
+    if (nextModeMenu) {
+      nextModeMenu.style.visibility = 'visible';
+    }
+
+    mode = newMode;
+  }
+
   this.scoreCounter = new ScoreCounter();
   const collisionChecker = new CollisionChecker(this.entities);
 
@@ -84,8 +104,8 @@ function Game(gameCanvas) {
 
   initialize();
 
-  this.update = function() {
-    if (!this.paused) {
+  const update = () => {
+    if (mode === 'game') {
       collisionChecker.update();
       keyboardListener.tick();
 
@@ -99,18 +119,16 @@ function Game(gameCanvas) {
     }
   }
 
-  this.render = function() {
+  const render = () => {
     function drawBackground() {
       canvasContext.fillStyle = canvas.style.background;
       canvasContext.fillRect(0, 0, canvas.width, canvas.height);
     }
 
-    if (!this.paused) {
-      drawBackground();
-      this.entities.apple.render(canvasContext);
-      this.entities.player.render(canvasContext);
-      HUDInstance.render(canvasContext);
-    }
+    drawBackground();
+    this.entities.apple.render(canvasContext);
+    this.entities.player.render(canvasContext);
+    HUDInstance.render(canvasContext);
   }
 
   this.checkFps = function(observerFunction) {
@@ -131,8 +149,8 @@ function Game(gameCanvas) {
     const fpsPerSecond = 1000/limitFps;
 
     setInterval(() => {
-      this.update();
-      this.render();
+      update();
+      render();
     }, fpsPerSecond);
   }
 
